@@ -8,6 +8,7 @@ export const getCharactersByName = async (name: string): Promise<Character[]> =>
 
 
         const filteredCharacters: Character[] = characters.map((char: any) => ({
+            id: char.id,
             name: char.name,
             image: char.image,
             status: char.status,
