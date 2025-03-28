@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { getCharactersByName } from "@/services/CharacterService";
 import { Character } from "@/types/Character";
+import Image from "next/image";
+import loadingIcon from "@/../../public/loading.svg"
+import "./GetCharacterComponent.scss"
 
 export default function GetCharacterComponent() {
     const [data, setData] = useState<Character[]>([]);
-    const [search, setSearch] = useState<string>("Rick");
+    const [search, setSearch] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -47,13 +50,13 @@ export default function GetCharacterComponent() {
                 </button>
             </div>
 
-            {/* Error Message */}
+
             {error && <p className="text-red-500">{error}</p>}
 
-            {/* Loading Spinner */}
+
             {loading && (
                 <div className="flex justify-center my-4">
-                    <div className="animate-spin h-10 w-10 border-4 border-blue-500 border-t-transparent rounded-full">Loading</div>
+                    <Image id={"loading"} src={loadingIcon} alt={'loading'} width={200} height={200}/>
                 </div>
             )}
 
