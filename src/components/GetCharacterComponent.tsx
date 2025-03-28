@@ -50,7 +50,7 @@ export default function GetCharacterComponent() {
     return (
         <div className="p-6 max-w-5xl mx-auto">
             {/* Search Input */}
-            <div className="flex gap-4 mb-6 items-center">
+            <header className="flex gap-4 mb-6 items-center">
                 <input
                     type="text"
                     value={search}
@@ -69,7 +69,7 @@ export default function GetCharacterComponent() {
                         "Search"
                     )}
                 </button>
-            </div>
+            </header>
 
             {/* Error Message */}
             {error && <p className="text-red-500 text-center">{error}</p>}
@@ -83,21 +83,21 @@ export default function GetCharacterComponent() {
 
             {/* Character Cards */}
             {!loading && data.length > 0 && (
-                <div className="flex flex-wrap justify-center gap-6">
+                <main className="flex flex-wrap justify-center gap-6">
                     {data.map((char, id) => (
                         <div
                             key={id}
                             className="flex flex-col items-center bg-white shadow-lg rounded-xl overflow-hidden w-72 transform transition-transform duration-300 hover:scale-105"
                         >
                             <img src={char.image} alt={char.name} className="w-full h-56 object-cover" />
-                            <div className="p-4 text-center">
+                            <section className="p-4 text-center">
                                 <h2 className="text-xl font-semibold">{char.name}</h2>
                                 <p className="text-gray-600">{char.species} - {char.status}</p>
                                 <p className="text-sm text-gray-500 mt-1">📍 {char.location}</p>
-                            </div>
+                            </section>
                         </div>
                     ))}
-                </div>
+                </main>
             )}
         </div>
     );
