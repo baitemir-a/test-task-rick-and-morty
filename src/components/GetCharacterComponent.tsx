@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getCharactersByName } from "@/services/CharacterService";
 import { Character } from "@/types/Character";
 import Image from "next/image";
@@ -13,20 +13,39 @@ export default function GetCharacterComponent() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
+    // Check localStorage for cached data
+    useEffect(() => {
+        const cachedData = localStorage.getItem(search);
+        if (cachedData) {
+            setData(JSON.parse(cachedData));
+        }
+    }, [search]); // This will run when the search value changes
+
     async function getCharacters() {
         setLoading(true);
         setError(null);
-        setData([]);
+
+        // Check if data is already cached
+        const cachedData = localStorage.getItem(search);
+        if (cachedData) {
+            setData(JSON.parse(cachedData)); // Use cached data
+            setLoading(false);
+            return;
+        }
+
+        setData([]); // Reset data before fetching
+
         try {
             const characters = await getCharactersByName(search);
             setData(characters);
+            // Store the fetched data in localStorage
+            localStorage.setItem(search, JSON.stringify(characters));
         } catch (err) {
             setError("Failed to fetch characters.");
         } finally {
             setLoading(false);
         }
     }
-
 
     return (
         <div className="p-6 max-w-5xl mx-auto">
@@ -65,9 +84,9 @@ export default function GetCharacterComponent() {
             {/* Character Cards */}
             {!loading && data.length > 0 && (
                 <div className="flex flex-wrap justify-center gap-6">
-                    {data.map((char) => (
+                    {data.map((char, id) => (
                         <div
-                            key={char.name}
+                            key={id}
                             className="flex flex-col items-center bg-white shadow-lg rounded-xl overflow-hidden w-72 transform transition-transform duration-300 hover:scale-105"
                         >
                             <img src={char.image} alt={char.name} className="w-full h-56 object-cover" />
